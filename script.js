@@ -1,9 +1,16 @@
 // Base de datos con tus invitados reales
 const invitadosDB = [
-  { id: "1", nombre: "Juan Perez", mesaNumero: 1, asiento: 1 },
-  { id: "2", nombre: "Maria Gomez", mesaNumero: 1, asiento: 2 },
-  { id: "3", nombre: "Carlos Rodriguez", mesaNumero: 2, asiento: 1 },
-  // ... pegás aquí el resto de la lista ...
+  { id: "1", nombre: "CAROLA GOMEZ", mesaNumero: 1 },
+  { id: "2", nombre: "SILVIA FLORES", mesaNumero: 1 },
+  { id: "3", nombre: "DAVID DI LULLO", mesaNumero: 1 },
+  { id: "4", nombre: "LUCIANA FLORES", mesaNumero: 1 },
+  { id: "5", nombre: "SANTIAGO CORBALAN", mesaNumero: 1 },
+  { id: "6", nombre: "EZEQUIEL AGUIRRE", mesaNumero: 1 },
+  { id: "7", nombre: "SONIA ZAMORANO", mesaNumero: 1 },
+  { id: "8", nombre: "DARIO CORONEL", mesaNumero: 1 },
+  { id: "9", nombre: "GLORIA CRUZ", mesaNumero: 1 },
+  { id: "10", nombre: "LUIS MOYANO", mesaNumero: 1 },
+  { id: "11", nombre: "RUBEN BAZAN", mesaNumero: 1 },
 ];
 
 const guestCard = document.getElementById('guest-card');
