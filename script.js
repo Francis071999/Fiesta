@@ -544,34 +544,5 @@ function realizarBusqueda() {
     div.onclick = () => { mostrarInvitado(inv); searchResults.innerHTML = ''; searchInput.value = ''; };
     searchResults.appendChild(div);
   });
-  // Control de Música de Fondo
-const musicBtn = document.getElementById('music-btn');
-const bgMusic = document.getElementById('bg-music');
-let isPlaying = false;
-
-function toggleMusic() {
-  if (isPlaying) {
-    bgMusic.pause();
-    musicBtn.textContent = '✨ Toca aquí para encender la fiesta 🎶';
-    musicBtn.classList.remove('playing');
-    musicBtn.classList.add('pulse');
-  } else {
-    bgMusic.play().then(() => {
-      musicBtn.textContent = '⏸️ Pausar Música';
-      musicBtn.classList.add('playing');
-      musicBtn.classList.remove('pulse');
-    }).catch(err => {
-      alert("No se pudo cargar el archivo de audio. Verifica que el archivo 'cancion.mp3' esté subido en la misma carpeta.");
-    });
-  }
-  isPlaying = !isPlaying;
-}
-
-if (musicBtn && bgMusic) {
-  musicBtn.addEventListener('click', (e) => {
-    e.stopPropagation(); // Evita conflictos con otros clics en la página
-    toggleMusic();
-  });
-}
 }
 
