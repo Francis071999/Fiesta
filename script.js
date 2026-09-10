@@ -1,15 +1,10 @@
-// Base de datos de 400 invitados distribuidos en 40 mesas
-const invitadosDB = [];
-for (let i = 1; i <= 400; i++) {
-  let nombre = `Invitado ${i}`;
-  if (i === 1) nombre = "Juan Perez";
-  invitadosDB.push({
-    id: i.toString(),
-    nombre: nombre,
-    mesaNumero: Math.ceil(i / 10),
-    asiento: ((i - 1) % 10) + 1
-  });
-}
+// Base de datos con tus invitados reales
+const invitadosDB = [
+  { id: "1", nombre: "Juan Perez", mesaNumero: 1, asiento: 1 },
+  { id: "2", nombre: "Maria Gomez", mesaNumero: 1, asiento: 2 },
+  { id: "3", nombre: "Carlos Rodriguez", mesaNumero: 2, asiento: 1 },
+  // ... pegás aquí el resto de la lista ...
+];
 
 const guestCard = document.getElementById('guest-card');
 const guestName = document.getElementById('guest-name');
