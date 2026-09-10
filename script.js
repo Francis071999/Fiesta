@@ -1,11 +1,15 @@
-// LISTA REAL DE INVITADOS
+// ==========================================
+// 1. LISTA REAL DE INVITADOS (400 PERSONAS)
+// Reemplaza los nombres de ejemplo por tu lista real
+// ==========================================
 const invitadosDB = [
   { nombre: "Franco Osores", mesaNumero: mesa 1 },
   { nombre: "Ramon Vergara", mesaNumero: mesa 2 },
   { nombre: "Lionel Messi", mesaNumero: mesa 3 },
-  // ...y así sucesivamente con todos los nombres
+  // PEGA AQUÍ EL RESTO DE TUS INVITADOS HASTA LLEGAR A LOS 400
 ];
 
+// Elementos del DOM
 const guestCard = document.getElementById('guest-card');
 const guestName = document.getElementById('guest-name');
 const guestTable = document.getElementById('guest-table');
@@ -20,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
   checkUrlParams();
 });
 
+// Función para renderizar individualmente cada mesa con sus sillas
 function createTableElement(number) {
   const wrapper = document.createElement('div');
   wrapper.className = 'table-wrapper';
@@ -32,7 +37,7 @@ function createTableElement(number) {
 
   const totalChairs = 10;
   const isDesktop = window.innerWidth >= 650;
-  const radius = isDesktop ? 28 : 20;
+  const radius = isDesktop ? 28 : 18;
 
   for (let i = 0; i < totalChairs; i++) {
     const chair = document.createElement('div');
@@ -51,11 +56,14 @@ function createTableElement(number) {
   return wrapper;
 }
 
+// Renderizado de las 40 mesas en las grillas correspondientes
 function renderSaloon() {
   const leftTop = document.getElementById('left-top');
   const leftBottom = document.getElementById('left-bottom');
   const rightTop = document.getElementById('right-top');
   const rightBottom = document.getElementById('right-bottom');
+
+  if (!leftTop || !leftBottom || !rightTop || !rightBottom) return;
 
   leftTop.innerHTML = '';
   leftBottom.innerHTML = '';
@@ -77,49 +85,42 @@ function renderSaloon() {
   }
 }
 
+// Lectura de parámetros por URL (por si escanean un QR directo de mesa)
 function checkUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
   const numeroMesa = urlParams.get('mesa');
-  const id = urlParams.get('invitado') || urlParams.get('id');
   const nombre = urlParams.get('nombre');
 
-  // Si escanean el QR de una mesa específica (ej: ?mesa=31)
   if (numeroMesa) {
     resaltarMesaDirecta(numeroMesa);
-    searchSection.classList.add('hidden');
     return;
   }
 
-  // Si vienen por búsqueda de invitado o ID individual
-  let encontrado = null;
-  if (id) {
-    encontrado = invitadosDB.find(item => item.id === id.trim());
-  } else if (nombre) {
-    encontrado = invitadosDB.find(item => item.nombre.toLowerCase().replace(/\s+/g, '') === nombre.toLowerCase().replace(/\s+/g, ''));
-  }
-
-  if (encontrado) {
-    mostrarInvitado(encontrado);
-    searchSection.classList.add('hidden');
+  if (nombre) {
+    const encontrado = invitadosDB.find(item => 
+      item.nombre.toLowerCase().replace(/\s+/g, '') === nombre.toLowerCase().replace(/\s+/g, '')
+    );
+    if (encontrado) {
+      mostrarInvitado(encontrado);
+    }
   }
 }
 
-// Función para iluminar la mesa y hacer desplazado suave
+// Función para resaltar una mesa ingresada directamente
 function resaltarMesaDirecta(num) {
-  guestName.textContent = `Ubicación: Mesa ${num}`;
-  guestTable.textContent = num;
-  guestSeat.textContent = "—";
-  guestCard.classList.remove('hidden');
+  if (guestName) guestName.textContent = `Ubicación: Mesa ${num}`;
+  if (guestTable) guestTable.textContent = num;
+  if (guestSeat) guestSeat.textContent = "—";
+  if (guestCard) guestCard.classList.remove('hidden');
 
   document.querySelectorAll('.table-wrapper').forEach(m => {
     if (m.id === `table-${num}`) {
       m.classList.add('highlight');
       m.classList.remove('dimmed');
       
-      // Desplazamiento automático para centrar la mesa en pantallas móviles
       setTimeout(() => {
         m.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 400);
+      }, 300);
     } else {
       m.classList.add('dimmed');
       m.classList.remove('highlight');
@@ -127,11 +128,12 @@ function resaltarMesaDirecta(num) {
   });
 }
 
+// Función para resaltar la mesa al seleccionar un invitado del buscador
 function mostrarInvitado(invitado) {
-  guestName.textContent = invitado.nombre;
-  guestTable.textContent = invitado.mesaNumero;
-  guestSeat.textContent = invitado.asiento;
-  guestCard.classList.remove('hidden');
+  if (guestName) guestName.textContent = invitado.nombre;
+  if (guestTable) guestTable.textContent = invitado.mesaNumero;
+  if (guestSeat) guestSeat.textContent = invitado.asiento || "—";
+  if (guestCard) guestCard.classList.remove('hidden');
 
   document.querySelectorAll('.table-wrapper').forEach(m => {
     if (m.id === `table-${invitado.mesaNumero}`) {
@@ -140,7 +142,7 @@ function mostrarInvitado(invitado) {
       
       setTimeout(() => {
         m.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 400);
+      }, 300);
     } else {
       m.classList.add('dimmed');
       m.classList.remove('highlight');
@@ -148,19 +150,26 @@ function mostrarInvitado(invitado) {
   });
 }
 
-searchBtn.addEventListener('click', realizarBusqueda);
-searchInput.addEventListener('input', realizarBusqueda);
+// Buscador dinámico de invitados
+if (searchBtn) searchBtn.addEventListener('click', realizarBusqueda);
+if (searchInput) searchInput.addEventListener('input', realizarBusqueda);
 
 function realizarBusqueda() {
   const q = searchInput.value.toLowerCase().trim();
+  if (!searchResults) return;
   searchResults.innerHTML = '';
   if (!q) return;
+
   const res = invitadosDB.filter(i => i.nombre.toLowerCase().includes(q));
   res.slice(0, 5).forEach(inv => {
     const div = document.createElement('div');
     div.className = 'result-item';
     div.innerHTML = `<span>${inv.nombre}</span> <strong>Mesa ${inv.mesaNumero}</strong>`;
-    div.onclick = () => { mostrarInvitado(inv); searchResults.innerHTML = ''; searchInput.value = ''; };
+    div.onclick = () => { 
+      mostrarInvitado(inv); 
+      searchResults.innerHTML = ''; 
+      searchInput.value = ''; 
+    };
     searchResults.appendChild(div);
   });
 }
