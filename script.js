@@ -37,7 +37,7 @@ function createTableElement(number) {
 
   const totalChairs = 10;
   const isDesktop = window.innerWidth >= 650;
-  const radius = isDesktop ? 28 : 24;
+  const radius = isDesktop ? 28 : 20;
 
   for (let i = 0; i < totalChairs; i++) {
     const chair = document.createElement('div');
@@ -88,7 +88,7 @@ function checkUrlParams() {
   const id = urlParams.get('invitado') || urlParams.get('id');
   const nombre = urlParams.get('nombre');
 
-  // Si escanean el QR de una mesa específica (ej: ?mesa=10)
+  // Si escanean el QR de una mesa específica (ej: ?mesa=31)
   if (numeroMesa) {
     resaltarMesaDirecta(numeroMesa);
     searchSection.classList.add('hidden');
@@ -109,7 +109,7 @@ function checkUrlParams() {
   }
 }
 
-// Función para iluminar la mesa directamente cuando escanean el QR de mesa
+// Función para iluminar la mesa y hacer desplazado suave
 function resaltarMesaDirecta(num) {
   guestName.textContent = `Ubicación: Mesa ${num}`;
   guestTable.textContent = num;
@@ -120,6 +120,11 @@ function resaltarMesaDirecta(num) {
     if (m.id === `table-${num}`) {
       m.classList.add('highlight');
       m.classList.remove('dimmed');
+      
+      // Desplazamiento automático para centrar la mesa en pantallas móviles
+      setTimeout(() => {
+        m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 400);
     } else {
       m.classList.add('dimmed');
       m.classList.remove('highlight');
@@ -137,6 +142,10 @@ function mostrarInvitado(invitado) {
     if (m.id === `table-${invitado.mesaNumero}`) {
       m.classList.add('highlight');
       m.classList.remove('dimmed');
+      
+      setTimeout(() => {
+        m.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 400);
     } else {
       m.classList.add('dimmed');
       m.classList.remove('highlight');
