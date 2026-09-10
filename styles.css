@@ -346,4 +346,17 @@ body {
   .grid-3-cols {
     gap: 14px 8px;
   }
+  .site-footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: auto;
+  border-top: 1px solid #334155;
+  background-color: #0f172a;
+}
+
+.site-footer p {
+  color: #64748b;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
 }
