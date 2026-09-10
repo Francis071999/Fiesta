@@ -84,10 +84,19 @@ function renderSaloon() {
 
 function checkUrlParams() {
   const urlParams = new URLSearchParams(window.location.search);
+  const numeroMesa = urlParams.get('mesa');
   const id = urlParams.get('invitado') || urlParams.get('id');
   const nombre = urlParams.get('nombre');
-  let encontrado = null;
 
+  // Si escanean el QR de una mesa específica (ej: ?mesa=10)
+  if (numeroMesa) {
+    resaltarMesaDirecta(numeroMesa);
+    searchSection.classList.add('hidden');
+    return;
+  }
+
+  // Si vienen por búsqueda de invitado o ID individual
+  let encontrado = null;
   if (id) {
     encontrado = invitadosDB.find(item => item.id === id.trim());
   } else if (nombre) {
@@ -98,6 +107,24 @@ function checkUrlParams() {
     mostrarInvitado(encontrado);
     searchSection.classList.add('hidden');
   }
+}
+
+// Función para iluminar la mesa directamente cuando escanean el QR de mesa
+function resaltarMesaDirecta(num) {
+  guestName.textContent = `Ubicación: Mesa ${num}`;
+  guestTable.textContent = num;
+  guestSeat.textContent = "—";
+  guestCard.classList.remove('hidden');
+
+  document.querySelectorAll('.table-wrapper').forEach(m => {
+    if (m.id === `table-${num}`) {
+      m.classList.add('highlight');
+      m.classList.remove('dimmed');
+    } else {
+      m.classList.add('dimmed');
+      m.classList.remove('highlight');
+    }
+  });
 }
 
 function mostrarInvitado(invitado) {
